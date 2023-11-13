@@ -2,7 +2,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
 \usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{array}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.5}
 
 \begin{document}
 
@@ -25,7 +30,7 @@
 \\[0.2cm]
 \HRule
 \\[0.4cm]
-{\large Novembre 2023}
+{\large 2023 - 2024}
 \\[1.5cm]
 
 \begin{figure}[h!]
@@ -38,15 +43,15 @@
 	\begin{flushleft} 
 		\emph{Auteur}
 		\\
-		Emeric \textsc{Lambois}
+		\textsc{Lambois} Emeric
 		\\
-		Julien \textsc{Mernier}
+		\textsc{Mernier} Julien
 		\\
-		Benjamin \textsc{Pans}
+		\textsc{Pans} Benjamin
 		\\
-		Victor \textsc{Santelé}
+		\textsc{Santelé} Victor
 		\\
-		Jonathan \textsc{Smith}
+		\textsc{Smith} Jonathan
 		\\
 	\end{flushleft}
 \end{minipage}
@@ -55,7 +60,7 @@
 	\begin{flushright}
 		\emph{Professeur}
 		\\
-		Antoine \textsc{Clarinval}
+		\textsc{Clarinval} Antoine
 		\\
 	\end{flushright}
 \end{minipage}
@@ -69,13 +74,28 @@
 \newpage
 \section{Abstraction des données}
 
+Le type de données dont nous disposons sont des attributs ainsi que des positions. Le dataset à notre disposition qui est l’ensemble de données est une table où chaque item de celle-ci représente une observation d’attaque de requin, cette observation se caractérise par des attributs comme la race du requin ou encore le lieu de l’attaque. Il y a également la position de cette attaque grâce à la latitude et la longitude de cette attaque. Nous avons comme type de données des attributs, des items et des positions. En plus du dataset qui nous a été fourni, nous avons également généré un dataset qui reprend pour chaque race de requin la taille des différentes parties du corps. Par exemple il y a la taille de la mâchoire ou encore de la nageoire. Voici les attributs qui seront utilisé dans notre application :
 
+\begin{enumerate}
+	\item Espèce ("Species") : espèce du requin observé (donnée catégorielle).
+	\item Latitude ("Latitude") : latitude de l’attaque observée (données divergentes qui descendent jusque -\ang{180}, qui montent jusque \ang{180} et avec \ang{0} comme point central).
+	\item Longitude ("Longitude") : longitude de l’attaque observée (données divergentes qui descendent jusque -\ang{180}, qui montent jusque \ang{180} et avec \ang{0} comme point central).
+	\item Position : la position de l’attaque observée est obtenue grâce à sa latitude et sa longitude.
+	\item Pour chaque espèce de requin, la taille des différentes parties qui le compose. Ex : taille de sa mâchoire ou de ses nageoires (données ordonnées ordinales).
+\end{enumerate}
 
 \newpage
 \section{Description de l’utilisateur}
 
 Mr X est un personnage un peu particulier, depuis sa tendre enfance il fasciné par les fonds marins et plus particulièrement par les requins. Prenant un peu trop à cœur les films Jurassic Park, il a décidé de poursuivre une quête complètement folle, devenir un scientifique et de recréer un mégalodon. Mr X cherche à localiser un maximum de requin proche des plages, avec des caractéristiques essentielles pour réaliser sa nouvelle création.
 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=16.4cm]{assets/personna/alain_grantte}
+	\caption{\label{assets/personna/alain_grantte} Personna}
+\end{figure}
+
+\newpage
 \section{Abstraction des tâches}
 
 \begin{enumerate}
@@ -87,15 +107,6 @@ Mr X est un personnage un peu particulier, depuis sa tendre enfance il fasciné 
 	\item Comparer la durée et le coût du trajet afin d’optimiser la récupération de plusieurs parties de requin.
 \end{enumerate}
 
-\subsection{Sélection des parties de requin}
-
-\subsection{Ajustements des caractéristiques}
-
-\subsection{Aide au choix des espèces}
-
-\subsection{Sélection des espèces}
-
-\subsection{Itinéraire du voyage}
 
 \newpage
 \section{Prototype de basse fidélité}
@@ -135,6 +146,55 @@ Mr X est un personnage un peu particulier, depuis sa tendre enfance il fasciné 
 \end{figure}
 
 \clearpage
-\section{Mapping entre les taches et le prototype}
+\section{Mapping entre les tâches et le prototype}
+
+
+\begin{center}
+	\begin{tabular}{|p{3.5cm}|p{7cm}|p{3.5cm}|}
+		\hline
+		Tâches
+		&
+		Explications
+		&
+		Figures
+		\\\hline
+		1. Choisir la partie du requin que l’on souhaite récupérer.
+		&
+		Ce choix se fera via le schéma du requin en milieu de page.
+		&
+		Figure 1 – Choix partie requin – Onglet "Pimp my requin".
+		\\\hline
+		2. Définir les caractéristiques de la partie du requin.
+		&
+		Définir les caractéristiques se fera via les différents "sliders" (curseurs) présent sur la droite de la page.
+		&
+		Figure 2 – Choix caractéristique – Onglet "Where is my requin ?".
+		\\\hline
+		3. Comparer les espèces de requin entre elles dans le but de définir l’espèce qui permet de récupérer plusieurs parties en une fois.
+		&
+		Il sera possible de déterminer l’espèce de requin que l’on souhaite visualiser via la liste présente sur la gauche de la page. Une fois le choix de l’espèce effectué, les différentes visualisations sur la droite de la page s'actualisent. Ces visualisations nous permettent d’effectuer les comparaisons. De plus, dès qu'il est possible de regrouper des parties via une seule espèce, l'espèce permettant cela sera mise en avant par un petit logo "recommandation".
+		&
+		Figure 3 – Comparaison des espèces vis-à-vis de leurs caractéristique – Onglet "Who's da best".
+		\\\hline
+		4. Établir une liste d’espèces de requin qui constituera les étapes du voyage à réaliser pour finaliser le mégalodon.
+		&
+		Sur cette page, la partie gauche sera dédiée à la liste des différentes espèces de requin. Tandis que la droite sera dédiée au "panier" auquel sera ajoutée l’espèce que l’on souhaite. Cette page sera sauvegardée jusqu’à la validation du voyage. Un bouton "add" permet de revenir à la première page (Figure 1) et permettra de recommencer le processus avec une partie que l’on n'a pas encore sélectionné par le passé.
+		&
+		Figure 4 – Etablir un panier d’espèce de requin – Onglet "The panier".
+		\\\hline
+		5. Visualiser le voyage à réaliser pour récupérer les parties du/des différents requins.
+		&
+		La visualisation du voyage se fera sur la carte en milieu de page.
+		&
+		Figure 5 – Visualisation du voyage.
+		\\\hline
+		6. Comparer la durée et le coût du trajet afin d’optimiser la récupération de plusieurs parties de requin.
+		&
+		La comparaison sera possible via les différentes à cocher sur la gauche de la page. Une case montrera le voyage avec le coût le plus faible et l’autre case montrera le voyage le moins coûteux en temps.
+		&
+		Figure 5 – Visualisation du voyage.
+		\\\hline
+	\end{tabular}
+\end{center}
 
 \end{document}

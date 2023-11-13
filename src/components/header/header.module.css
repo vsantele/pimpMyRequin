@@ -1,10 +1,12 @@
 .active {
+  padding-top: 4rem;
   color: black;
   background-color: white;
   border-color: white;
 }
 
 .inactive {
+  padding: 0.5rem 1rem;
   background-color: black;
   color: black;
 }
@@ -19,7 +21,6 @@
 
 .tab {
   flex: 1;
-  padding: 0.5rem 1rem;
   justify-items: stretch;
   border: 1px solid transparent;
   border-radius: 0.25rem;

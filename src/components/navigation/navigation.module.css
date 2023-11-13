@@ -7,5 +7,15 @@
 }
 
 .icon {
-  font-size: 4rem;
+  font-size: 2rem;
+}
+
+.icon-button {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  outline: inherit;
 }

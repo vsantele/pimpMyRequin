@@ -1,14 +1,30 @@
 import classes from "./navigation.module.css"
 
-export default function Navigation() {
+export interface NavigationProps {
+  onNext: () => void
+  onPrevious: () => void
+}
+
+export default function Navigation({
+  onNext,
+  onPrevious,
+}: Readonly<NavigationProps>) {
   return (
     <div className={classes.navigation}>
-      <span className={classes.icon} style={{ marginLeft: "0.4rem" }}>
+      <button
+        className={classes["icon-button"]}
+        style={{ marginLeft: "0.4rem" }}
+        onClick={onPrevious}
+      >
         👈
-      </span>
-      <span className={classes.icon} style={{ marginRight: "0.4rem" }}>
+      </button>
+      <button
+        className={classes["icon-button"]}
+        style={{ marginRight: "0.4rem" }}
+        onClick={onNext}
+      >
         👉
-      </span>
+      </button>
     </div>
   )
 }

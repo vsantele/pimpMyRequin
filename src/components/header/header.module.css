@@ -1,14 +1,14 @@
 .active {
-  padding-top: 4rem;
-  color: black;
+  padding-top: 2rem;
+  color: var(--black);
   background-color: white;
   border-color: white;
 }
 
 .inactive {
   padding: 0.5rem 1rem;
-  background-color: black;
-  color: black;
+  background-color: var(--black);
+  color: var(--black);
 }
 
 .header {

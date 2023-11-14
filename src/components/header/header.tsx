@@ -12,28 +12,28 @@ const Header = ({ activeTab }: HeaderProps) => {
           activeTab === 0 ? classes.active : classes.inactive
         }`}
       >
-        Pimp My requin
+        Pimp My Requin
       </div>
       <div
         className={`${classes.tab} ${
           activeTab === 1 ? classes.active : classes.inactive
         }`}
       >
-        Tab 2
+        Where Is My Requin ?
       </div>
       <div
         className={`${classes.tab} ${
           activeTab === 2 ? classes.active : classes.inactive
         }`}
       >
-        Tab 3
+        Who's the Best ?
       </div>
       <div
         className={`${classes.tab} ${
           activeTab === 3 ? classes.active : classes.inactive
         }`}
       >
-        Tab 4
+        The Panier
       </div>
     </div>
   )

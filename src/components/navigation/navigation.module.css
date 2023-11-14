@@ -4,6 +4,7 @@
   align-items: center;
   height: 4rem;
   width: 100%;
+  z-index: 10000;
 }
 
 .icon {

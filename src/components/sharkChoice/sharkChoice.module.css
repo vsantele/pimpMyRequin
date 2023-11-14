@@ -1,0 +1,45 @@
+.choice {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 30%;
+  height: 100%;
+}
+
+.choice p {
+  font-size: 130%;
+}
+
+.choice label {
+  margin-bottom: 10px;
+}
+
+.choice select {
+  font-size: 150%;
+  width: 250px;
+}
+
+.choice option:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.barchart {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 60%;
+  height: 40%;
+}
+
+.spiderchart {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.map {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+}

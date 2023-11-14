@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect } from "react"
-
+import classes from "./shark.module.css"
 export interface SharkProps {
   nez?: MutableRefObject<SVGPathElement | null>
   aileronHaut?: MutableRefObject<SVGPathElement | null>
@@ -69,6 +69,7 @@ export default function Shark(props: Readonly<SharkProps>) {
       data-name="Calque 2"
       viewBox="0 0 1612.34 711"
       version="1.1"
+      className={classes.shark}
     >
       <g id="Requin" data-name="Calque 1">
         <path

@@ -1,6 +1,16 @@
 import * as d3 from "d3"
-import { useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
+import { useNavigationContext } from "../../contexes/navigationContext"
+import { useSharkContext } from "../../contexes/sharkContext"
+import { SharkPart } from "../../models/Shark"
 import Shark from "../shark/shark"
+import classes from "./pimpMyRequin.module.css"
+
+interface Part {
+  ref: React.RefObject<SVGPathElement>
+  name: string
+  key: SharkPart
+}
 
 export default function PimpMyRequin() {
   const nez = useRef<SVGPathElement | null>(null)
@@ -12,48 +22,59 @@ export default function PimpMyRequin() {
   const queue = useRef<SVGPathElement | null>(null)
   const bas = useRef<SVGPathElement | null>(null)
 
-  const parts = useMemo(
+  const { setSelectedSharkPart } = useSharkContext()
+  const { nextTab } = useNavigationContext()
+
+  const parts: Part[] = useMemo(
     () => [
       {
         ref: nez,
         name: "Nez",
+        key: "nez",
       },
       {
         ref: aileronHaut,
         name: "Aileron Haut",
+        key: "aileronHaut",
       },
       {
         ref: gueule,
         name: "Gueule",
+        key: "gueule",
       },
       {
         ref: tronc,
         name: "Tronc",
+        key: "tronc",
       },
       {
         ref: aileronBas,
         name: "Aileron Bas",
+        key: "aileronBas",
       },
       {
         ref: aileronArriere,
         name: "Aileron Arrière",
+        key: "aileronArriere",
       },
       {
         ref: queue,
         name: "Queue",
+        key: "queue",
       },
-      { ref: bas, name: "Bas" },
+      { ref: bas, name: "Bas", key: "bas" },
     ],
     [aileronArriere, aileronBas, aileronHaut, gueule, nez, queue, tronc]
   )
 
-  function onMouseEnterAnimation(part: SVGPathElement) {
+  function onMouseEnterAnimation(part: Part) {
+    const svg = part.ref.current!
     return () => {
-      const bbox = part.getBBox()
+      const bbox = svg.getBBox()
       const cx = bbox.x + bbox.width / 2
       const cy = bbox.y + bbox.height / 2
 
-      d3.select(part)
+      d3.select(svg)
         .transition()
         .duration(200)
         .attr(
@@ -65,13 +86,14 @@ export default function PimpMyRequin() {
     }
   }
 
-  function onMouseLeaveAnimation(part: SVGPathElement) {
+  function onMouseLeaveAnimation(part: Part) {
+    const svg = part.ref.current!
     return () => {
-      const bbox = part.getBBox()
+      const bbox = svg.getBBox()
       const cx = bbox.x + bbox.width / 2
       const cy = bbox.y + bbox.height / 2
 
-      d3.select(part)
+      d3.select(svg)
         .transition()
         .duration(200)
         .attr(
@@ -83,23 +105,29 @@ export default function PimpMyRequin() {
     }
   }
 
-  function onClick(name: string) {
-    return () => console.log("You clicked on a part", name)
-  }
+  const onClick = useCallback(
+    (part: Part) => {
+      return () => {
+        setSelectedSharkPart(part.key)
+        nextTab()
+      }
+    },
+    [nextTab, setSelectedSharkPart]
+  )
 
   useEffect(() => {
     const eventFunctions = new Map()
 
-    parts.forEach(({ ref, name }) => {
-      const part = ref.current
-      if (part) {
+    parts.forEach((part) => {
+      const partSvg = part.ref.current
+      if (partSvg) {
         const mouseEnterFunc = onMouseEnterAnimation(part)
         const mouseLeaveFunc = onMouseLeaveAnimation(part)
-        const mouseClickFunc = onClick(name)
-        part.addEventListener("click", mouseClickFunc)
-        part.addEventListener("mouseenter", mouseEnterFunc)
-        part.addEventListener("mouseleave", mouseLeaveFunc)
-        eventFunctions.set(part, {
+        const mouseClickFunc = onClick(part)
+        partSvg.addEventListener("click", mouseClickFunc)
+        partSvg.addEventListener("mouseenter", mouseEnterFunc)
+        partSvg.addEventListener("mouseleave", mouseLeaveFunc)
+        eventFunctions.set(partSvg, {
           mouseEnterFunc,
           mouseLeaveFunc,
           mouseClickFunc,
@@ -107,29 +135,31 @@ export default function PimpMyRequin() {
       }
     })
     return () => {
-      parts.forEach(({ ref }) => {
-        const part = ref.current
-        if (part) {
+      parts.forEach((part) => {
+        const partSvg = part.ref.current
+        if (partSvg) {
           const { mouseEnterFunc, mouseLeaveFunc, mouseClickFunc } =
-            eventFunctions.get(part)
-          part.removeEventListener("click", mouseClickFunc)
-          part.removeEventListener("mouseenter", mouseEnterFunc)
-          part.removeEventListener("mouseleave", mouseLeaveFunc)
+            eventFunctions.get(partSvg)
+          partSvg.removeEventListener("click", mouseClickFunc)
+          partSvg.removeEventListener("mouseenter", mouseEnterFunc)
+          partSvg.removeEventListener("mouseleave", mouseLeaveFunc)
         }
       })
     }
-  }, [parts])
+  }, [parts, onClick])
 
   return (
-    <Shark
-      nez={nez}
-      aileronArriere={aileronArriere}
-      aileronBas={aileronBas}
-      aileronHaut={aileronHaut}
-      tronc={tronc}
-      gueule={gueule}
-      queue={queue}
-      bas={bas}
-    />
+    <div className={classes["shark-container"]}>
+      <Shark
+        nez={nez}
+        aileronArriere={aileronArriere}
+        aileronBas={aileronBas}
+        aileronHaut={aileronHaut}
+        tronc={tronc}
+        gueule={gueule}
+        queue={queue}
+        bas={bas}
+      />
+    </div>
   )
 }

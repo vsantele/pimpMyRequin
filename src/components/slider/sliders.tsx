@@ -1,8 +1,10 @@
+import { useSharkContext } from "../../contexes/sharkContext"
 import {
   SharkPart,
   SharkPartPropertiesKeys,
   sharkPartPropertiesInfo,
 } from "../../models/Shark"
+import Slider from "./slider"
 
 interface Props {
   selectedPart: SharkPart
@@ -13,28 +15,26 @@ interface Props {
   ) => void
 }
 
-export default function Slider({ onChange, selectedPart }: Readonly<Props>) {
-  const properties = sharkPartPropertiesInfo[selectedPart]
+export default function Sliders({ onChange, selectedPart }: Readonly<Props>) {
+  const propertiesInfo = sharkPartPropertiesInfo[selectedPart]
+  const { getValue } = useSharkContext()
   return (
     <div>
-      {Object.entries(properties).map(
+      {Object.entries(propertiesInfo).map(
         ([name, { min, max, defaultValue, step }]) => (
-          <input
-            key={name}
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            defaultValue={defaultValue}
-            id="myRange"
-            onChange={(e) =>
-              onChange?.(
-                selectedPart,
-                name as SharkPartPropertiesKeys,
-                parseInt(e.target.value)
-              )
-            }
-          />
+          <p key={name}>
+            <Slider
+              min={min}
+              max={max}
+              defaultValue={defaultValue}
+              value={getValue(selectedPart, name as SharkPartPropertiesKeys)}
+              step={step}
+              name={name as SharkPartPropertiesKeys}
+              onChange={(prop, value) => {
+                onChange?.(selectedPart, prop, value)
+              }}
+            />
+          </p>
         )
       )}
     </div>

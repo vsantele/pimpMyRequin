@@ -68,6 +68,29 @@ export const sharkPartPropertiesInfo = {
   Partial<{ [K in keyof SharkPartProperties]: SharkPartPropertiesInfo }>
 >
 
+export function getSharkPropertyName(key: keyof SharkPartProperties) {
+  switch (key) {
+    case "longueur":
+      return "Longueur"
+    case "largeur":
+      return "Largeur"
+    case "epaisseur":
+      return "Épaisseur"
+    case "tailleOeil":
+      return "Taille de l'oeil"
+    case "longueurMuseau":
+      return "Longueur du museau"
+    case "tailleDent":
+      return "Taille des dents"
+    case "ecartMachoire":
+      return "Écart de la mâchoire"
+    case "tailleAileron":
+      return "Taille de l'aileron"
+    default:
+      return key
+  }
+}
+
 export type SharkPropertiesPerPart = Record<
   SharkPart,
   keyof SharkPartProperties

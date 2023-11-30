@@ -26,7 +26,6 @@ export default function Shark(props: Readonly<SharkProps>) {
   useEffect(() => {
     if (nez) {
       nez.current = document.getElementById("nez") as unknown as SVGPathElement
-      console.log(nez.current)
     }
     if (aileronHaut) {
       aileronHaut.current = document.getElementById(

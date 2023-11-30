@@ -54,21 +54,12 @@ export default function MapContainer({
       ref={whenCreated}
     >
       <LayersControl position="topright">
-        <LayersControl.BaseLayer checked name="OpenStreetMap.Mapnik">
+        <LayersControl.BaseLayer checked name="OpenStreetMap">
           <TileLayer
             zIndex={1}
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             maxNativeZoom={19}
-            maxZoom={25}
-          />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="MapBox.Satellite">
-          <TileLayer
-            zIndex={1}
-            attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maxNativeZoom={21}
             maxZoom={25}
           />
         </LayersControl.BaseLayer>

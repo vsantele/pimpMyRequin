@@ -15,6 +15,9 @@ import {
   TileLayer,
 } from "react-leaflet"
 import HandleMapEvents from "./handleMapEvents"
+import "leaflet.markercluster/dist/MarkerCluster.css"
+import "leaflet.markercluster/dist/MarkerCluster.Default.css"
+import "leaflet.markercluster"
 
 interface MapProps {
   center?: LatLngExpression

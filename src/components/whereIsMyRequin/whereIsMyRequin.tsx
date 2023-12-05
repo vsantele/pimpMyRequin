@@ -22,9 +22,11 @@ export default function WhereIsMyRequin() {
   return (
     <div style={{ display: "flex" }}>
       <div style={{ height: "40rem", width: "50rem" }}>
-        <MapContainer center={position} zoom={13} initMap={initMap}>
-          <Marker position={position}></Marker>
-        </MapContainer>
+        <MapContainer
+          center={position}
+          zoom={2}
+          initMap={initMap}
+        ></MapContainer>
       </div>
       <div>
         <Sliders

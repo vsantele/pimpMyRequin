@@ -1,4 +1,3 @@
-import { Marker } from "react-leaflet"
 import { useSharkContext } from "../../contexes/sharkContext"
 import MapContainer from "../map/mapContainer"
 import Sliders from "../slider/sliders"
@@ -31,8 +30,8 @@ export default function WhereIsMyRequin() {
       <div>
         <Sliders
           selectedPart={selectedSharkPart}
-          onChange={(part, properties, value) =>
-            dispatch({ part, properties, value, type: "UPDATE" })
+          onChange={(part, propertyName, value) =>
+            dispatch({ part, propertyName, value, type: "UPDATE" })
           }
         />
       </div>

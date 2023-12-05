@@ -12,7 +12,7 @@ type SharkPropertiesState = Record<
 export type SharkPropertiesAction = {
   type: "UPDATE"
   part: SharkPart
-  properties: SharkPartPropertiesKeys
+  propertyName: SharkPartPropertiesKeys
   value: number
 }
 
@@ -38,7 +38,7 @@ export const sharkPropertiesReducer = (
         ...state,
         [action.part]: {
           ...state[action.part],
-          [action.properties]: action.value,
+          [action.propertyName]: action.value,
         },
       }
     default:

@@ -17,6 +17,7 @@ export interface SharkPartProperties {
   largeur: number
   epaisseur: number
   tailleAileron: number
+  largeurMuseau: number
 }
 
 export type SharkPartPropertiesInfo = {
@@ -30,38 +31,40 @@ export type SharkPartPropertiesKeys = keyof SharkPartProperties
 
 export const sharkPartPropertiesInfo = {
   nez: {
-    tailleOeil: { min: 4, max: 10, defaultValue: 5, step: 1 },
-    longueurMuseau: { min: 10, max: 15, defaultValue: 5, step: 1 },
+    tailleOeil: { min: 1, max: 10, defaultValue: 5, step: 1 },
+    longueurMuseau: { min: 5, max: 15, defaultValue: 10, step: 1 },
+    largeurMuseau: { min: 2, max: 15, defaultValue: 10, step: 1 },
+    epaisseur: { min: 1, max: 15, defaultValue: 5, step: 1 },
   } as const,
   aileronHaut: {
-    longueur: { min: 10, max: 20, defaultValue: 15, step: 1 },
-    largeur: { min: 5, max: 10, defaultValue: 7, step: 1 },
+    longueur: { min: 5, max: 20, defaultValue: 12, step: 1 },
+    largeur: { min: 2, max: 10, defaultValue: 7, step: 1 },
   },
   gueule: {
     tailleDent: { min: 1.3, max: 5.1, defaultValue: 3, step: 0.1 },
-    ecartMachoire: { min: 50, max: 100, defaultValue: 75, step: 1 },
+    ecartMachoire: { min: 20, max: 100, defaultValue: 50, step: 1 },
   },
   tronc: {
-    longueur: { min: 5, max: 10, defaultValue: 7, step: 1 },
-    largeur: { min: 5, max: 10, defaultValue: 7, step: 1 },
-    epaisseur: { min: 2, max: 8, defaultValue: 6, step: 1 },
+    longueur: { min: 2, max: 10, defaultValue: 6, step: 1 },
+    largeur: { min: 2, max: 10, defaultValue: 5, step: 1 },
+    epaisseur: { min: 1, max: 8, defaultValue: 5, step: 1 },
   },
   aileronBas: {
-    longueur: { min: 10, max: 20, defaultValue: 15, step: 1 },
-    largeur: { min: 5, max: 10, defaultValue: 7, step: 1 },
+    longueur: { min: 5, max: 20, defaultValue: 12, step: 1 },
+    largeur: { min: 2, max: 10, defaultValue: 6, step: 1 },
   },
   queue: {
-    tailleAileron: { min: 10, max: 20, defaultValue: 15, step: 1 },
-    longueur: { min: 15, max: 30, defaultValue: 23, step: 1 },
+    tailleAileron: { min: 5, max: 20, defaultValue: 15, step: 1 },
+    longueur: { min: 5, max: 30, defaultValue: 20, step: 1 },
   },
   aileronArriere: {
-    longueur: { min: 2, max: 6, defaultValue: 4, step: 1 },
+    longueur: { min: 12, max: 6, defaultValue: 4, step: 1 },
     largeur: { min: 1, max: 4, defaultValue: 2, step: 1 },
   },
   bas: {
-    longueur: { min: 5, max: 10, defaultValue: 7, step: 1 },
-    largeur: { min: 5, max: 8, defaultValue: 6, step: 1 },
-    epaisseur: { min: 2, max: 6, defaultValue: 4, step: 1 },
+    longueur: { min: 2, max: 10, defaultValue: 7, step: 1 },
+    largeur: { min: 2, max: 8, defaultValue: 6, step: 1 },
+    epaisseur: { min: 1, max: 6, defaultValue: 4, step: 1 },
   },
 } as const satisfies Record<
   SharkPart,

@@ -1,0 +1,25 @@
+.slider-container {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.slider-label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.slider-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.slider-input {
+  flex-grow: 1;
+  width: 350px;
+}
+
+.slider-value {
+  margin-left: 10px;
+}

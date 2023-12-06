@@ -17,7 +17,13 @@ export default function SharkProvider({
   const getValue = useCallback(
     (partName: SharkPart, propertiesName: SharkPartPropertiesKeys) => {
       const part = properties[partName]
-      return part[propertiesName]
+      return part.properties[propertiesName]
+    },
+    [properties]
+  )
+  const getSharkIds = useCallback(
+    (partName: SharkPart) => {
+      return properties[partName].sharks
     },
     [properties]
   )
@@ -29,8 +35,9 @@ export default function SharkProvider({
       properties,
       dispatch,
       getValue,
+      getSharkIds,
     } satisfies SharkContextType
-  }, [getValue, properties, selectedSharkPart])
+  }, [getValue, getSharkIds, properties, selectedSharkPart])
 
   return <SharkContext.Provider value={value}>{children}</SharkContext.Provider>
 }

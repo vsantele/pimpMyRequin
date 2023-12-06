@@ -187,9 +187,9 @@ export const sharkPartPropertiesInfo = {
       label: "Profondeur du ventre",
     },
   },
-} as const satisfies Record<
+} as Record<
   SharkPart,
-  Partial<{ [K in keyof SharkPartProperties]: SharkPartPropertiesInfo }>
+  Partial<{ [K in SharkPartPropertiesKeys]: SharkPartPropertiesInfo }>
 >
 
 export function getSharkPropertyName(key: keyof SharkPartProperties) {

@@ -39,16 +39,13 @@ export const sharpPropertyKeyToName = Object.entries(
   return acc
 }, {} as Record<SharkPropertyKey, SharkPropertyName>)
 
-export type SharkPartPropertiesValue = { caseNumber: string; value: number }
-export type SharkPartPropertiesSpecies = Record<
-  string,
-  SharkPartPropertiesValue[]
->
+export type SharkPartPropertiesValue = Record<string, number> // key: caseNumber, value: value
 export type SharkPartProperties = Record<
   SharkPartPropertiesKeys,
-  SharkPartPropertiesSpecies
+  SharkPartPropertiesValue
 >
-export type SharkProperties = Record<SharkPart, SharkPartProperties>
+export type SharkPartSpecies = Record<string, SharkPartProperties>
+export type SharkProperties = Record<SharkPart, SharkPartSpecies>
 
 export function getSharkPropertyJson() {
   const sharkProperties = {} as SharkProperties
@@ -67,19 +64,16 @@ export function getSharkPropertyJson() {
       const partName = propName.split("_")[0] as SharkPart
       const property = propName.split("_")[1] as SharkPartPropertiesKeys
       if (!sharkProperties[partName]) {
-        sharkProperties[partName] = {} as SharkPartProperties
+        sharkProperties[partName] = {} as SharkPartSpecies
       }
-      if (!sharkProperties[partName][property]) {
-        sharkProperties[partName][property] = {} as SharkPartPropertiesSpecies
+      if (!sharkProperties[partName][species]) {
+        sharkProperties[partName][species] = {} as SharkPartProperties
       }
-      if (!sharkProperties[partName][property][species]) {
-        sharkProperties[partName][property][species] =
-          [] as SharkPartPropertiesValue[]
+      if (!sharkProperties[partName][species][property]) {
+        sharkProperties[partName][species][property] =
+          {} as SharkPartPropertiesValue
       }
-      sharkProperties[partName][property][species].push({
-        caseNumber,
-        value: value as number,
-      })
+      sharkProperties[partName][species][property][caseNumber] = value as number
     })
   })
   return sharkProperties

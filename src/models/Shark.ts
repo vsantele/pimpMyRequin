@@ -150,7 +150,7 @@ export const sharkPartPropertiesInfo = {
   },
   aileronArriere: {
     longueur: {
-      min: 12,
+      min: 2,
       max: 6,
       defaultValue: 4,
       step: 1,

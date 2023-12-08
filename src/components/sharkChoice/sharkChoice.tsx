@@ -10,7 +10,11 @@ import {
   marker,
   markerClusterGroup,
 } from "leaflet"
-import { SharkPart, SharkPartPropertiesKeys } from "../../models/Shark"
+import {
+  SharkPart,
+  SharkPartPropertiesKeys,
+  sharkPartPropertiesInfo,
+} from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
 
 const position: [number, number] = [-7.96, 2.23]
@@ -92,15 +96,18 @@ export default function SharkChoice() {
         getPropertyBarChart(selectedSharkPart),
         selectedSpecieProperties[getPropertyBarChart(selectedSharkPart)]
       )
+      const partProperty = getPropertyBarChart(selectedSharkPart)
+      const data = selectedSpecieProperties[partProperty].slice(0, 42)
       const barChart = new Chart(barChartRef.current, {
         type: "bar",
         data: {
+          labels: data.map((c, i) => i),
           datasets: [
             {
-              label: "Size",
-              data: selectedSpecieProperties[
-                getPropertyBarChart(selectedSharkPart)
-              ],
+              barPercentage: 1,
+              label: selectedSpecie,
+              data: data,
+              backgroundColor: "#ff9600",
               borderWidth: 1,
             },
           ],
@@ -135,7 +142,9 @@ export default function SharkChoice() {
             },
             title: {
               display: true,
-              text: "Votre Titre",
+              text:
+                sharkPartPropertiesInfo[selectedSharkPart][partProperty]
+                  ?.label ?? "",
               color: "grey", // Couleur du texte du titre
             },
           },
@@ -156,7 +165,7 @@ export default function SharkChoice() {
 
       return () => barChart.destroy()
     }
-  }, [selectedSharkPart, selectedSpecieProperties])
+  }, [selectedSharkPart, selectedSpecie, selectedSpecieProperties])
 
   useEffect(() => {
     if (selectedSharkPart === "") return
@@ -164,19 +173,15 @@ export default function SharkChoice() {
       const radarChart = new Chart(radarChartRef.current, {
         type: "radar",
         data: {
-          labels: [
-            "Eating",
-            "Drinking",
-            "Sleeping",
-            "Designing",
-            "Coding",
-            "Cycling",
-            "Running",
-          ],
+          labels: Object.values(sharkPartPropertiesInfo[selectedSharkPart]).map(
+            (p) => p.label
+          ),
           datasets: [
             {
-              label: "Dataset",
-              data: [65, 59, 90, 81, 56, 55, 40],
+              label: selectedSpecie,
+              data: Object.values(selectedSpecieProperties).map(
+                (i) => i.reduce((acc, cur) => acc + cur, 0) / i.length
+              ),
               fill: true,
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgb(255, 99, 132)",
@@ -190,23 +195,9 @@ export default function SharkChoice() {
         options: {
           responsive: true,
           maintainAspectRatio: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: "grey", // Couleur de la grille pour l'axe Y
-              },
-              ticks: {
-                color: "grey", // Couleur des étiquettes pour l'axe Y
-              },
-            },
-            x: {
-              grid: {
-                color: "grey", // Couleur de la grille pour l'axe X
-              },
-              ticks: {
-                color: "grey", // Couleur des étiquettes pour l'axe X
-              },
+          elements: {
+            line: {
+              backgroundColor: "white",
             },
           },
           plugins: {
@@ -217,7 +208,7 @@ export default function SharkChoice() {
             },
             title: {
               display: true,
-              text: "Votre Titre",
+              text: "Caractéristiques",
               color: "grey", // Couleur du texte du titre
             },
           },
@@ -238,7 +229,7 @@ export default function SharkChoice() {
 
       return () => radarChart.destroy()
     }
-  }, [selectedSharkPart, selectedSpecieProperties])
+  }, [selectedSharkPart, selectedSpecie, selectedSpecieProperties])
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>

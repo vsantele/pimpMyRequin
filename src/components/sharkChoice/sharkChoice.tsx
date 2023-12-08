@@ -1,13 +1,28 @@
-import { useRef, useEffect, useMemo } from "react"
+import { useRef, useEffect, useMemo, useCallback, useState } from "react"
 import Chart from "chart.js/auto"
-import classes from "./sharkChoice.module.css"
 import { useSharkContext } from "../../contexes/sharkContext"
-import { getSharkData, getSpecies } from "./utils"
+import { filterForSpecie, getSharkData, getSpecies } from "./utils"
+import MapContainer from "../map/mapContainer"
+import {
+  LatLngBoundsExpression,
+  Map,
+  MarkerClusterGroup,
+  marker,
+  markerClusterGroup,
+} from "leaflet"
+import { SharkPart, SharkPartPropertiesKeys } from "../../models/Shark"
+import { sharkAttacks } from "../../utils/json"
+
+const position: [number, number] = [-7.96, 2.23]
 
 export default function SharkChoice() {
   const barChartRef = useRef(null)
   const radarChartRef = useRef(null)
-
+  const mapRef = useRef<Map | null>(null)
+  const selectedSharkMarkerGroupRef = useRef<MarkerClusterGroup | null>(null)
+  const [selectedSpecie, setSelectedSpecie] = useState("")
+  const [selectedSpecieProperties, setSelectedSpecieProperties] =
+    useState<Record<Partial<SharkPartPropertiesKeys>, number[]> | null>(null)
   const { selectedSharkPart, getSharkIds } = useSharkContext()
 
   const species = useMemo(() => {
@@ -18,24 +33,81 @@ export default function SharkChoice() {
   function handleChangeSpecies(event: React.ChangeEvent<HTMLSelectElement>) {
     if (!selectedSharkPart) return
     const selectedShark = event.target.value
-    console.log(getSharkData(selectedSharkPart, selectedShark))
+    setSelectedSpecieProperties(getSharkData(selectedSharkPart, selectedShark))
+    setSelectedSpecie(selectedShark)
+    displaySharks()
   }
 
+  function initMap(map: Map) {
+    mapRef.current = map
+  }
+
+  const displaySharks = useCallback(() => {
+    const map = mapRef.current
+    const selectedSharkMarkerGroup = selectedSharkMarkerGroupRef.current
+    if (map) {
+      if (!selectedSharkPart) {
+        return
+      }
+      if (selectedSharkMarkerGroup) {
+        map.removeLayer(selectedSharkMarkerGroup)
+      }
+      const newSelectedSharkMarkerGroup = markerClusterGroup()
+      const selectedSharks = filterForSpecie(
+        getSharkIds(selectedSharkPart),
+        selectedSpecie
+      )
+      const showedSharks = sharkAttacks.filter((s) =>
+        selectedSharks.includes(s.caseNumber)
+      )
+      if (showedSharks.length == 1) {
+        map.setView([showedSharks[0].latitude, showedSharks[0].longitude], 5)
+      } else {
+        const bounds = getBounds(
+          showedSharks.map((s) => [s.latitude, s.longitude])
+        )
+        map.fitBounds(bounds, {
+          padding: [50, 50],
+        })
+      }
+      showedSharks.forEach((sharkAttack) => {
+        if (sharkAttack.latitude && sharkAttack.longitude) {
+          newSelectedSharkMarkerGroup.addLayer(
+            marker([sharkAttack.latitude, sharkAttack.longitude])
+          )
+        }
+      })
+      newSelectedSharkMarkerGroup.addTo(map)
+      selectedSharkMarkerGroupRef.current = newSelectedSharkMarkerGroup
+    }
+  }, [getSharkIds, selectedSharkPart, selectedSpecie])
+
   useEffect(() => {
-    if (barChartRef.current) {
+    if (
+      barChartRef.current &&
+      selectedSpecieProperties &&
+      selectedSharkPart !== ""
+    ) {
+      console.log(
+        getPropertyBarChart(selectedSharkPart),
+        selectedSpecieProperties[getPropertyBarChart(selectedSharkPart)]
+      )
       const barChart = new Chart(barChartRef.current, {
         type: "bar",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
           datasets: [
             {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
+              label: "Size",
+              data: selectedSpecieProperties[
+                getPropertyBarChart(selectedSharkPart)
+              ],
               borderWidth: 1,
             },
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: true,
           scales: {
             y: {
               beginAtZero: true,
@@ -84,10 +156,11 @@ export default function SharkChoice() {
 
       return () => barChart.destroy()
     }
-  }, [])
+  }, [selectedSharkPart, selectedSpecieProperties])
 
   useEffect(() => {
-    if (radarChartRef.current) {
+    if (selectedSharkPart === "") return
+    if (radarChartRef.current && selectedSpecieProperties) {
       const radarChart = new Chart(radarChartRef.current, {
         type: "radar",
         data: {
@@ -115,6 +188,8 @@ export default function SharkChoice() {
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: true,
           scales: {
             y: {
               beginAtZero: true,
@@ -163,14 +238,19 @@ export default function SharkChoice() {
 
       return () => radarChart.destroy()
     }
-  }, [])
+  }, [selectedSharkPart, selectedSpecieProperties])
 
   return (
-    <div className={classes.container}>
-      <div className={classes.choices}>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ flex: 2 }}>
         <label>
           <p>Choisissez votre requin :</p>
-          <select name="shark_choice" size={10} onChange={handleChangeSpecies}>
+          <select
+            style={{ width: "80%", minWidth: 200 }}
+            name="shark_choice"
+            size={10}
+            onChange={handleChangeSpecies}
+          >
             {species.map((shark, index) => (
               <SharkOption
                 key={shark.species}
@@ -182,13 +262,45 @@ export default function SharkChoice() {
           </select>
         </label>
       </div>
-      <div className={classes.barchart}>
-        <canvas ref={barChartRef}></canvas>
+      <div style={{ flex: 6 }}>
+        <div
+          style={{
+            position: "relative",
+            height: "20rem",
+            width: "90%",
+            marginBottom: "0.4rem",
+          }}
+        >
+          <canvas ref={barChartRef}></canvas>
+        </div>
+        <div style={{ width: "90%", height: "30rem" }}>
+          <div
+            style={{
+              display: "inline-block",
+              position: "relative",
+              height: "20rem",
+              maxHeight: "40rem",
+              width: "50%",
+            }}
+          >
+            <canvas ref={radarChartRef}></canvas>
+          </div>
+          <div
+            style={{
+              position: "relative",
+              display: "inline-block",
+              height: "20rem",
+              width: "50%",
+            }}
+          >
+            <MapContainer
+              center={position}
+              zoom={3}
+              initMap={initMap}
+            ></MapContainer>
+          </div>
+        </div>
       </div>
-      <div className={classes.spiderchart}>
-        <canvas ref={radarChartRef}></canvas>
-      </div>
-      <div className={classes.map}>a</div>
     </div>
   )
 }
@@ -197,15 +309,69 @@ function SharkOption({
   name,
   corr,
   isFirst,
-}: {
+}: Readonly<{
   name: string
   corr: number
   isFirst: boolean
-}) {
+}>) {
   return (
-    <option value={name}>
-      <strong>{name}</strong> - {(corr * 100).toFixed(2)}%{" "}
-      {isFirst && <span>👍</span>}
+    <option
+      value={name}
+      style={{
+        borderBottom: "4 solid white",
+      }}
+    >
+      <div
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <div style={{ flex: 3 }}>
+          <p>
+            <strong style={{ textTransform: "capitalize" }}>{name}</strong>
+          </p>
+          {(corr * 100).toFixed(2)}%
+        </div>
+        {isFirst && <span style={{ flex: 1, fontSize: 24 }}>👍</span>}
+      </div>
     </option>
   )
+}
+
+function getPropertyBarChart(part: SharkPart): SharkPartPropertiesKeys {
+  switch (part) {
+    case "nez":
+      return "longueurMuseau"
+    case "aileronArriere":
+    case "aileronBas":
+    case "aileronHaut":
+    case "queue":
+    case "bas":
+    case "tronc":
+      return "longueur"
+    case "gueule":
+      return "tailleDent"
+    default:
+      return "longueur"
+  }
+}
+
+function getBounds(points: [number, number][]): LatLngBoundsExpression {
+  const bounds: LatLngBoundsExpression = [
+    [points[0][0], points[0][1]],
+    [points[0][0], points[0][1]],
+  ]
+  points.forEach((point) => {
+    if (point[0] < bounds[0][0]) {
+      bounds[0][0] = point[0]
+    }
+    if (point[0] > bounds[1][0]) {
+      bounds[1][0] = point[0]
+    }
+    if (point[1] < bounds[0][1]) {
+      bounds[0][1] = point[1]
+    }
+    if (point[1] > bounds[1][1]) {
+      bounds[1][1] = point[1]
+    }
+  })
+  return bounds
 }

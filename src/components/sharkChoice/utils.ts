@@ -50,3 +50,11 @@ export function getSharkData(selectedPart: SharkPart, sharkName: string) {
     return acc
   }, {} as Record<Partial<SharkPartPropertiesKeys>, number[]>)
 }
+
+export function filterForSpecie(sharkIds: string[], species: string): string[] {
+  return sharkIds.filter(
+    (sharkId) =>
+      sharkAttacks.find((shark) => shark.caseNumber === sharkId)?.species ===
+      species
+  )
+}

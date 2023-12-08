@@ -62,7 +62,7 @@ export default function WhereIsMyRequin() {
       <div style={{ height: "40rem", width: "50rem" }}>
         <MapContainer
           center={position}
-          zoom={2}
+          zoom={1}
           initMap={initMap}
         ></MapContainer>
       </div>

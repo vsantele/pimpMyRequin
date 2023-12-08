@@ -14,18 +14,26 @@ export type SharkPropertiesAction = {
 }
 
 export const initialStateSharkProperties = Object.fromEntries(
-  Object.entries(sharkPartPropertiesInfo).map(([sharkPart, properties]) => [
-    sharkPart,
-    {
-      properties: Object.fromEntries(
-        Object.entries(properties).map(([key, value]) => [
-          key,
-          value.defaultValue,
-        ])
-      ) as Record<Partial<SharkPartPropertiesKeys>, number>,
-      sharks: [] as string[],
-    },
-  ])
+  Object.entries(sharkPartPropertiesInfo).map(([sharkPart, properties]) => {
+    const sharkProperties = Object.fromEntries(
+      Object.entries(properties).map(([key, value]) => [
+        key,
+        value.defaultValue,
+      ])
+    ) as Record<Partial<SharkPartPropertiesKeys>, number>
+    const sharks = filterSharks(
+      sharkAttacks,
+      sharkProperties,
+      sharkPart as SharkPart
+    )
+    return [
+      sharkPart,
+      {
+        properties: sharkProperties,
+        sharks,
+      },
+    ]
+  })
 ) as SharkPropertiesState
 
 export const sharkPropertiesReducer = (
@@ -112,7 +120,7 @@ function valueIsInRange({
   target,
   min,
   max,
-  delta = 0.1,
+  delta = 0.01,
 }: {
   value: number
   target: number

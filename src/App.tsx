@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import "./App.css"
 import Header from "./components/header/header"
 import Navigation from "./components/navigation/navigation"
@@ -11,6 +11,7 @@ import useSessionState from "./utils/useSessionState"
 
 function App() {
   const { selectedTab, nextTab, previousTab } = useNavigationContext()
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const [isJinglePlayed, setIsJinglePlayed] = useSessionState(
     "isJinglePlayed",
@@ -18,9 +19,11 @@ function App() {
   )
 
   useEffect(() => {
-    if (!isJinglePlayed) {
-      const audio = new Audio(jingleSrc)
-      audio.play()
+    const audio = audioRef.current
+    if (!isJinglePlayed && audio) {
+      if (audio.paused) {
+        audio.play()
+      }
       setIsJinglePlayed(true)
     }
   }, [isJinglePlayed, setIsJinglePlayed])
@@ -34,6 +37,7 @@ function App() {
         {selectedTab === 2 && <SharkChoice />}
       </div>
       <Navigation onNext={nextTab} onPrevious={previousTab} />
+      <audio src={jingleSrc} ref={audioRef} />
     </>
   )
 }

@@ -101,7 +101,7 @@ export default function SharkChoice() {
       const barChart = new Chart(barChartRef.current, {
         type: "bar",
         data: {
-          labels: data.map((c, i) => i),
+          labels: data.map((_, i) => i),
           datasets: [
             {
               barPercentage: 1,

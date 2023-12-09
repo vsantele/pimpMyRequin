@@ -1,5 +1,7 @@
 import { MutableRefObject, useEffect } from "react"
 import classes from "./shark.module.css"
+import { useSharkContext } from "../../contexes/sharkContext"
+import { SharkPart } from "../../models/Shark"
 export interface SharkProps {
   nez?: MutableRefObject<SVGPathElement | null>
   aileronHaut?: MutableRefObject<SVGPathElement | null>
@@ -23,44 +25,83 @@ export default function Shark(props: Readonly<SharkProps>) {
     bas,
   } = props
 
+  const { panier } = useSharkContext()
+  const selectedParts = Object.entries(panier)
+    .filter((i) => i[1] !== null)
+    .map(([part]) => part as SharkPart)
+
   useEffect(() => {
     if (nez) {
       nez.current = document.getElementById("nez") as unknown as SVGPathElement
+      if (selectedParts.includes("nez")) {
+        nez.current.classList.add(classes.selected)
+      }
     }
     if (aileronHaut) {
       aileronHaut.current = document.getElementById(
         "aileronHaut"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("aileronHaut")) {
+        aileronHaut.current.classList.add(classes.selected)
+      }
     }
     if (gueule) {
       gueule.current = document.getElementById(
         "gueule"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("gueule")) {
+        gueule.current.classList.add(classes.selected)
+      }
     }
     if (tronc) {
       tronc.current = document.getElementById(
         "tronc"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("tronc")) {
+        tronc.current.classList.add(classes.selected)
+      }
     }
     if (aileronBas) {
       aileronBas.current = document.getElementById(
         "aileronBas"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("aileronBas")) {
+        aileronBas.current.classList.add(classes.selected)
+      }
     }
     if (aileronArriere) {
       aileronArriere.current = document.getElementById(
         "aileronArriere"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("aileronArriere")) {
+        aileronArriere.current.classList.add(classes.selected)
+      }
     }
     if (queue) {
       queue.current = document.getElementById(
         "queue"
       ) as unknown as SVGPathElement
+      if (selectedParts.includes("queue")) {
+        queue.current.classList.add(classes.selected)
+      }
     }
     if (bas) {
       bas.current = document.getElementById("bas") as unknown as SVGPathElement
+      if (selectedParts.includes("bas")) {
+        bas.current.classList.add(classes.selected)
+      }
     }
-  }, [aileronArriere, aileronBas, aileronHaut, gueule, nez, queue, tronc, bas])
+  }, [
+    aileronArriere,
+    aileronBas,
+    aileronHaut,
+    gueule,
+    nez,
+    queue,
+    tronc,
+    bas,
+    selectedParts,
+  ])
 
   return (
     <svg

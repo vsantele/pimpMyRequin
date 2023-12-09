@@ -2,3 +2,7 @@
   color: var(--black);
   padding: 1rem;
 }
+
+.selected {
+  fill: var(--accent-color);
+}

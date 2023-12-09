@@ -18,6 +18,8 @@ export interface SharkContextType {
   dispatch: React.Dispatch<SharkPropertiesAction>
   getValue: (part: SharkPart, property: SharkPartPropertiesKeys) => number
   getSharkIds: (part: SharkPart) => string[]
+  panier: Record<SharkPart, string | null>
+  setPanierPart: (specie: string) => void
 }
 
 export const SharkContext = createContext<SharkContextType | undefined>(

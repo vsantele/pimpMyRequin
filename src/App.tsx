@@ -8,6 +8,7 @@ import WhereIsMyRequin from "./components/whereIsMyRequin/whereIsMyRequin"
 import { useNavigationContext } from "./contexes/navigationContext"
 import jingleSrc from "./assets/jingle.mp3"
 import useSessionState from "./utils/useSessionState"
+import Panier from "./components/panier/panier"
 
 function App() {
   const { selectedTab, nextTab, previousTab } = useNavigationContext()
@@ -35,6 +36,7 @@ function App() {
         {selectedTab === 0 && <PimpMyRequin />}
         {selectedTab === 1 && <WhereIsMyRequin />}
         {selectedTab === 2 && <SharkChoice />}
+        {selectedTab === 3 && <Panier />}
       </div>
       <Navigation onNext={nextTab} onPrevious={previousTab} />
       <audio src={jingleSrc} ref={audioRef} />

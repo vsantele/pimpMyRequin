@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback, useState } from "react"
+import { useRef, useEffect, useMemo, useCallback } from "react"
 import Chart from "chart.js/auto"
 import { useSharkContext } from "../../contexes/sharkContext"
 import { filterForSpecie, getSharkData, getSpecies } from "./utils"
@@ -24,21 +24,26 @@ export default function SharkChoice() {
   const radarChartRef = useRef(null)
   const mapRef = useRef<Map | null>(null)
   const selectedSharkMarkerGroupRef = useRef<MarkerClusterGroup | null>(null)
-  const [selectedSpecie, setSelectedSpecie] = useState("")
-  const [selectedSpecieProperties, setSelectedSpecieProperties] =
-    useState<Record<Partial<SharkPartPropertiesKeys>, number[]> | null>(null)
-  const { selectedSharkPart, getSharkIds } = useSharkContext()
-
+  const { selectedSharkPart, getSharkIds, panier, setPanierPart } =
+    useSharkContext()
+  const selectedSpecie = panier[selectedSharkPart as SharkPart]
   const species = useMemo(() => {
     if (!selectedSharkPart) return []
     return getSpecies(getSharkIds(selectedSharkPart))
   }, [selectedSharkPart, getSharkIds])
+  if (!selectedSpecie) {
+    setPanierPart(species[0]?.species ?? "")
+  }
+
+  const selectedSpecieProperties = useMemo(() => {
+    if (!selectedSharkPart || !selectedSpecie) return null
+    return getSharkData(selectedSharkPart, selectedSpecie)
+  }, [selectedSharkPart, selectedSpecie])
 
   function handleChangeSpecies(event: React.ChangeEvent<HTMLSelectElement>) {
     if (!selectedSharkPart) return
     const selectedShark = event.target.value
-    setSelectedSpecieProperties(getSharkData(selectedSharkPart, selectedShark))
-    setSelectedSpecie(selectedShark)
+    setPanierPart(selectedShark)
     displaySharks()
   }
 
@@ -50,7 +55,7 @@ export default function SharkChoice() {
     const map = mapRef.current
     const selectedSharkMarkerGroup = selectedSharkMarkerGroupRef.current
     if (map) {
-      if (!selectedSharkPart) {
+      if (!selectedSharkPart || !selectedSpecie) {
         return
       }
       if (selectedSharkMarkerGroup) {
@@ -90,12 +95,9 @@ export default function SharkChoice() {
     if (
       barChartRef.current &&
       selectedSpecieProperties &&
-      selectedSharkPart !== ""
+      selectedSharkPart !== "" &&
+      selectedSpecie !== null
     ) {
-      console.log(
-        getPropertyBarChart(selectedSharkPart),
-        selectedSpecieProperties[getPropertyBarChart(selectedSharkPart)]
-      )
       const partProperty = getPropertyBarChart(selectedSharkPart)
       const data = selectedSpecieProperties[partProperty].slice(0, 42)
       const barChart = new Chart(barChartRef.current, {
@@ -168,7 +170,7 @@ export default function SharkChoice() {
   }, [selectedSharkPart, selectedSpecie, selectedSpecieProperties])
 
   useEffect(() => {
-    if (selectedSharkPart === "") return
+    if (selectedSharkPart === "" || selectedSpecie === null) return
     if (radarChartRef.current && selectedSpecieProperties) {
       const radarChart = new Chart(radarChartRef.current, {
         type: "radar",
@@ -240,6 +242,7 @@ export default function SharkChoice() {
             style={{ width: "80%", minWidth: 200 }}
             name="shark_choice"
             size={10}
+            value={selectedSpecie ?? ""}
             onChange={handleChangeSpecies}
           >
             {species.map((shark, index) => (

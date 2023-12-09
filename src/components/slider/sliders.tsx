@@ -25,7 +25,7 @@ export default function Sliders({ onChange, selectedPart }: Readonly<Props>) {
       <h3>{getSharkPartName(selectedPart)}</h3>
       {Object.entries(propertiesInfo).map(
         ([name, { min, max, defaultValue, step, label }]) => (
-          <p key={name}>
+          <div key={name}>
             <Slider
               part={selectedPart}
               min={min}
@@ -39,7 +39,7 @@ export default function Sliders({ onChange, selectedPart }: Readonly<Props>) {
                 onChange?.(selectedPart, prop, value)
               }}
             />
-          </p>
+          </div>
         )
       )}
     </div>

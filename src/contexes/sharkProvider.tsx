@@ -1,5 +1,9 @@
 import { ReactNode, useCallback, useMemo, useReducer, useState } from "react"
-import { SharkPart, SharkPartPropertiesKeys } from "../models/Shark"
+import {
+  SharkPart,
+  SharkPartPropertiesKeys,
+  sharkPartPropertiesInfo,
+} from "../models/Shark"
 import { SharkContext, SharkContextType } from "./sharkContext"
 import sharkPropertiesReducer, {
   initialStateSharkProperties,
@@ -13,6 +17,13 @@ export default function SharkProvider({
     initialStateSharkProperties
   )
   const [selectedSharkPart, setSelectedSharkPart] = useState<SharkPart | "">("")
+
+  const [panier, setPanier] = useState<Record<SharkPart, string | null>>(
+    Object.keys(sharkPartPropertiesInfo).reduce((acc, part) => {
+      acc[part as SharkPart] = null
+      return acc
+    }, {} as Record<SharkPart, string | null>)
+  )
 
   const getValue = useCallback(
     (partName: SharkPart, propertiesName: SharkPartPropertiesKeys) => {
@@ -28,6 +39,19 @@ export default function SharkProvider({
     [properties]
   )
 
+  const setPanierPart = useCallback(
+    (specie: string) => {
+      if (selectedSharkPart === "") return
+      setPanier((prev) => {
+        return {
+          ...prev,
+          [selectedSharkPart]: specie,
+        }
+      })
+    },
+    [selectedSharkPart]
+  )
+
   const value = useMemo(() => {
     return {
       selectedSharkPart,
@@ -36,8 +60,17 @@ export default function SharkProvider({
       dispatch,
       getValue,
       getSharkIds,
+      panier,
+      setPanierPart,
     } satisfies SharkContextType
-  }, [getValue, getSharkIds, properties, selectedSharkPart])
+  }, [
+    selectedSharkPart,
+    properties,
+    getValue,
+    getSharkIds,
+    panier,
+    setPanierPart,
+  ])
 
   return <SharkContext.Provider value={value}>{children}</SharkContext.Provider>
 }

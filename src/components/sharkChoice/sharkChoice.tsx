@@ -11,7 +11,6 @@ import {
 } from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
 import { getBounds } from "../../utils/map"
-import classes from "./sharkChoice.module.css"
 
 const position: [number, number] = [-7.96, 2.23]
 

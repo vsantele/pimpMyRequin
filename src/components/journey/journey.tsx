@@ -7,6 +7,7 @@ import { useRef } from "react"
 import { getBounds } from "../../utils/map"
 import { Marker, Polyline } from "react-leaflet"
 import { useNavigationContext } from "../../contexes/navigationContext"
+import classes from "./journey.module.css"
 
 export default function Journey() {
   const { panier, properties } = useSharkContext()
@@ -34,6 +35,10 @@ export default function Journey() {
     }[]
   )
 
+  const distance = getDistance(sharks.map((s) => [s.latitude, s.longitude]))
+  const cost = getCost(distance)
+  const duration = getDuration(distance)
+
   function initMap(map: Map) {
     mapRef.current = map
     if (sharks.length == 0) return
@@ -53,7 +58,7 @@ export default function Journey() {
         display: "flex",
       }}
     >
-      <div style={{ width: "60vw", height: "60vh" }}>
+      <div style={{ width: "60vw", height: "80vh" }}>
         <MapContainer initMap={initMap}>
           {sharks.map((shark) => (
             <Marker
@@ -71,47 +76,48 @@ export default function Journey() {
         style={{
           marginLeft: "1rem",
           backgroundColor: "whitesmoke",
-          padding: "1rem",
+          padding: "2.4rem",
           color: "black",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
-        <div>
-          <h2>Type de trajet</h2>
-          <label style={{ marginRight: "1rem" }} htmlFor="shortestDistance">
-            <input
-              type="radio"
-              id="shortestDistance"
-              name="distance"
-              checked={false}
-            />
-            Le plus court
-          </label>
-          <label htmlFor="cheapestDistance">
-            <input
-              type="radio"
-              id="cheapestDistance"
-              name="distance"
-              checked={true}
-            />
-            Le moins cher
-          </label>
+        <div style={{}}>
+          <div>
+            <h2>Type de trajet</h2>
+            <label
+              style={{ marginRight: "1rem" }}
+              htmlFor="shortestDistance"
+              className={classes["container"]}
+            >
+              Le plus court{" "}
+              <input
+                type="radio"
+                id="shortestDistance"
+                name="distance"
+                checked={false}
+              />
+              <span className={classes["checkmark"]}></span>
+            </label>
+            <label htmlFor="cheapestDistance" className={classes["container"]}>
+              Le moins cher{" "}
+              <input
+                type="radio"
+                id="cheapestDistance"
+                name="distance"
+                checked={true}
+              />
+              <span className={classes["checkmark"]}></span>
+            </label>
+          </div>
+          <h2>Informations</h2>
+          <p>{distance.toLocaleString()} kilomètres</p>
+          <p>{cost.toLocaleString()} €</p>
+          <p>
+            {duration.toLocaleString()} Jour{duration > 1 ? "s" : ""}
+          </p>
         </div>
-        <h2 style={{ marginLeft: "1rem", textAlign: "start" }}>
-          Distance à parcourir
-        </h2>
-        <p style={{ marginLeft: "1rem" }}>
-          {getDistance(
-            sharks.map((s) => [s.latitude, s.longitude])
-          ).toLocaleString()}{" "}
-          kilomètres
-        </p>
-        <h2 style={{ marginLeft: "1rem", textAlign: "start" }}>Coût</h2>
-        <p style={{ marginLeft: "1rem" }}>
-          {getCost(
-            getDistance(sharks.map((s) => [s.latitude, s.longitude]))
-          ).toLocaleString()}{" "}
-          €
-        </p>
         <button style={{ marginTop: "8rem" }} onClick={() => setSelectedTab(0)}>
           Nouvelle partie
         </button>
@@ -145,4 +151,8 @@ function distanceBetween(coord1: [number, number], coord2: [number, number]) {
 
 function getCost(distance: number) {
   return Math.round(distance * 0.42)
+}
+
+function getDuration(distance: number) {
+  return Math.round(distance / 2000)
 }

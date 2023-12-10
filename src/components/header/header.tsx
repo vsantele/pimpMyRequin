@@ -26,7 +26,7 @@ const Header = ({ activeTab }: HeaderProps) => {
           activeTab === 2 ? classes.active : classes.inactive
         }`}
       >
-        Who's the Best ?
+        Whos Da Best ?
       </div>
       <div
         className={`${classes.tab} ${

@@ -1,6 +1,6 @@
 import { useNavigationContext } from "../../contexes/navigationContext"
 import { useSharkContext } from "../../contexes/sharkContext"
-import { SharkPart } from "../../models/Shark"
+import { panierMerged } from "../../utils/panier"
 
 export default function Panier() {
   const { panier } = useSharkContext()
@@ -39,14 +39,4 @@ export default function Panier() {
       <button onClick={() => setSelectedTab(0)}>Nouvelle partie</button>
     </div>
   )
-}
-
-function panierMerged(panier: Record<SharkPart, string | null>) {
-  return Object.entries(panier).reduce((acc, [part, specie]) => {
-    if (specie === null) return acc
-    return {
-      ...acc,
-      [specie]: [...(acc[specie] || []), part as SharkPart],
-    }
-  }, {} as Record<string, SharkPart[]>)
 }

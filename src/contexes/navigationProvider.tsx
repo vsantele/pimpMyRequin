@@ -10,12 +10,12 @@ export default function NavigationProvider({
     return {
       selectedTab,
       setSelectedTab: (newTab: number) => {
-        if (newTab < 0 || newTab > 3) return
+        if (newTab < 0 || newTab > 4) return
         setSelectedTab(newTab)
       },
       nextTab: () => {
         setSelectedTab((a) => {
-          if (a >= 3) return a
+          if (a >= 4) return a
           return a + 1
         })
       },

@@ -35,6 +35,13 @@ const Header = ({ activeTab }: HeaderProps) => {
       >
         The Panier
       </div>
+      <div
+        className={`${classes.tab} ${
+          activeTab === 4 ? classes.active : classes.inactive
+        }`}
+      >
+        The Journey
+      </div>
     </div>
   )
 }

@@ -3,19 +3,14 @@ import Chart from "chart.js/auto"
 import { useSharkContext } from "../../contexes/sharkContext"
 import { filterForSpecie, getSharkData, getSpecies } from "./utils"
 import MapContainer from "../map/mapContainer"
-import {
-  LatLngBoundsExpression,
-  Map,
-  MarkerClusterGroup,
-  marker,
-  markerClusterGroup,
-} from "leaflet"
+import { Map, MarkerClusterGroup, marker, markerClusterGroup } from "leaflet"
 import {
   SharkPart,
   SharkPartPropertiesKeys,
   sharkPartPropertiesInfo,
 } from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
+import { getBounds } from "../../utils/map"
 
 const position: [number, number] = [-7.96, 2.23]
 
@@ -346,26 +341,4 @@ function getPropertyBarChart(part: SharkPart): SharkPartPropertiesKeys {
     default:
       return "longueur"
   }
-}
-
-function getBounds(points: [number, number][]): LatLngBoundsExpression {
-  const bounds: LatLngBoundsExpression = [
-    [points[0][0], points[0][1]],
-    [points[0][0], points[0][1]],
-  ]
-  points.forEach((point) => {
-    if (point[0] < bounds[0][0]) {
-      bounds[0][0] = point[0]
-    }
-    if (point[0] > bounds[1][0]) {
-      bounds[1][0] = point[0]
-    }
-    if (point[1] < bounds[0][1]) {
-      bounds[0][1] = point[1]
-    }
-    if (point[1] > bounds[1][1]) {
-      bounds[1][1] = point[1]
-    }
-  })
-  return bounds
 }

@@ -11,6 +11,7 @@ import {
 } from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
 import { getBounds } from "../../utils/map"
+import classes from "./sharkChoice.module.css"
 
 const position: [number, number] = [-7.96, 2.23]
 
@@ -111,7 +112,7 @@ export default function SharkChoice() {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           scales: {
             y: {
               beginAtZero: true,
@@ -191,7 +192,7 @@ export default function SharkChoice() {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           elements: {
             line: {
               backgroundColor: "white",

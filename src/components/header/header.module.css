@@ -17,6 +17,8 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  text-transform: uppercase;
+  font-weight: bolder;
 }
 
 .tab {

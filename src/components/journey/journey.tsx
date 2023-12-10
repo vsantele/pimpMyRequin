@@ -1,4 +1,4 @@
-import { Map } from "leaflet"
+import { Icon, Map } from "leaflet"
 import { useSharkContext } from "../../contexes/sharkContext"
 import { SharkPart } from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
@@ -8,6 +8,7 @@ import { getBounds } from "../../utils/map"
 import { Marker, Polyline } from "react-leaflet"
 import { useNavigationContext } from "../../contexes/navigationContext"
 import classes from "./journey.module.css"
+import markerSrc from "../../assets/marker-icon.png"
 
 export default function Journey() {
   const { panier, properties } = useSharkContext()
@@ -64,6 +65,13 @@ export default function Journey() {
             <Marker
               key={shark.caseNumber}
               position={[shark.latitude, shark.longitude]}
+              icon={
+                new Icon({
+                  iconUrl: markerSrc,
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                })
+              }
             ></Marker>
           ))}
           <Polyline

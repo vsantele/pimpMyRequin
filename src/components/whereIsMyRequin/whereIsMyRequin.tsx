@@ -1,11 +1,18 @@
 import { useSharkContext } from "../../contexes/sharkContext"
 import MapContainer from "../map/mapContainer"
 import Sliders from "../slider/sliders"
-import { Map, MarkerClusterGroup, markerClusterGroup, marker } from "leaflet"
+import {
+  Map,
+  MarkerClusterGroup,
+  markerClusterGroup,
+  marker,
+  Icon,
+} from "leaflet"
 import { useCallback, useEffect, useRef } from "react"
 import classes from "./whereIsMyRequin.module.css"
 import { sharkAttacks } from "../../utils/json"
 import { SharkPart } from "../../models/Shark"
+import markerSrc from "../../assets/marker-icon.png"
 
 const position: [number, number] = [-7.96, 2.23]
 
@@ -37,7 +44,13 @@ export default function WhereIsMyRequin() {
           .forEach((sharkAttack) => {
             if (sharkAttack.latitude && sharkAttack.longitude) {
               newSelectedSharkMarkerGroup.addLayer(
-                marker([sharkAttack.latitude, sharkAttack.longitude])
+                marker([sharkAttack.latitude, sharkAttack.longitude], {
+                  icon: new Icon({
+                    iconUrl: markerSrc,
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                  }),
+                })
               )
             }
           })

@@ -3,7 +3,13 @@ import Chart from "chart.js/auto"
 import { useSharkContext } from "../../contexes/sharkContext"
 import { filterForSpecie, getSharkData, getSpecies } from "./utils"
 import MapContainer from "../map/mapContainer"
-import { Map, MarkerClusterGroup, marker, markerClusterGroup } from "leaflet"
+import {
+  Icon,
+  Map,
+  MarkerClusterGroup,
+  marker,
+  markerClusterGroup,
+} from "leaflet"
 import {
   SharkPart,
   SharkPartPropertiesKeys,
@@ -11,6 +17,7 @@ import {
 } from "../../models/Shark"
 import { sharkAttacks } from "../../utils/json"
 import { getBounds } from "../../utils/map"
+import markerSrc from "../../assets/marker-icon.png"
 
 const position: [number, number] = [-7.96, 2.23]
 
@@ -77,7 +84,13 @@ export default function SharkChoice() {
       showedSharks.forEach((sharkAttack) => {
         if (sharkAttack.latitude && sharkAttack.longitude) {
           newSelectedSharkMarkerGroup.addLayer(
-            marker([sharkAttack.latitude, sharkAttack.longitude])
+            marker([sharkAttack.latitude, sharkAttack.longitude], {
+              icon: new Icon({
+                iconUrl: markerSrc,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+              }),
+            })
           )
         }
       })

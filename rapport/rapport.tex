@@ -79,19 +79,19 @@
 \clearpage
 \section{Introduction}
 
-Dans le cadre du cours de « Visualisation de l’information », nous avons été chargés de concevoir un outil de visualisation répondant aux besoins d’un utilisateur choisi. Effectivement, la créativité octroyée lors de ce projet, nous autorise à choisir l’utilisateur cible que nous voulons, ainsi que l’objectif de notre outil de visualisation. Cependant, cet outil devait porter sur le jeu de données mis à disposition, qui décrivait des attaques de requins.
-De ce fait, nous avons saisi l’opportunité créative que l’on nous a laissée et réfléchit sur le thème imposé. Ce qui nous a conduit à imaginer un outil de visualisation servant de configurateur de requin, avec pour objectif de pouvoir recréer un mégalodon si on le souhaite en prenant les particularités de divers requins ayant réalisé des attaques sur les humains.
+Dans le cadre du cours de « Visualisation de l’information », nous avons été chargés de concevoir un outil de visualisation répondant aux besoins d’un utilisateur choisi. Effectivement, la créativité octroyée lors de ce projet nous autorise à choisir l’utilisateur cible que nous voulons, ainsi que l’objectif de notre outil de visualisation. Cependant, cet outil devait porter sur le jeu de données mis à disposition, qui décrivait des attaques de requins.
+De ce fait, nous avons saisi l’opportunité créative que l’on nous a laissée et réfléchi sur le thème imposé. Ce qui nous a conduits à imaginer un outil de visualisation servant de configurateur de requin, avec pour objectif de pouvoir recréer un mégalodon si on le souhaite en prenant les particularités de divers requins ayant réalisé des attaques sur les humains.
 
 \clearpage
 \section{Abstraction des données}
 
-Dans cette partie, nous allons détailler la démarche et la méthodologie que nous avons adopté dans le but d’obtenir un dataset pratique et simple d’utilisation. Nous allons tout d’abord aborder le jeu de données qui était mis à disposition et le détailler. Ensuite, nous allons détailler notre démarche de nettoyage de données pour obtenir notre dataset utilisable. Enfin, nous détaillerons les informations concernant notre jeu de données final.
+Dans cette partie, nous allons détailler la démarche et la méthodologie que nous avons adoptées dans le but d’obtenir un dataset pratique et simple d’utilisation. Nous allons tout d’abord aborder le jeu de données qui était mis à notre disposition et le détailler. Ensuite, nous allons détailler notre démarche de nettoyage de données pour obtenir notre dataset utilisable. Enfin, nous détaillerons les informations concernant notre jeu de données final.
 
 \subsection{Dataset initial}
 
-Le jeu de données mis à disposition recensait 6448 attaques de requins, avec pour chaque attaque 23 features communiquant des informations sur celle-ci. Dans les informations se trouvant dans le jeu de données, nous pouvons par exemple retrouver pour chaque attaque de requins, la date à laquelle s’est déroulé celle-ci, le pays où l’attaque s’est réalisée, la position géographique (Latitude, Longitude), l’espèce de requin, etc.
-Parmi ces 23 features, nous avons décidé de seulement se focaliser sur certaines, car elles se révélaient pertinentes pour ce que nous voulions faire avec notre outil de visualisation.
-C’est pourquoi, nous avons choisi d’utiliser :
+Le jeu de données mis à notre disposition recensait 6448 attaques de requins, avec pour chaque attaque 23 features communiquant des informations sur celle-ci. Dans les informations se trouvant dans le jeu de données, nous pouvons par exemple retrouver pour chaque attaque de requins, la date à laquelle s’est déroulée celle-ci, le pays où l’attaque s’est réalisée, la position géographique (Latitude, Longitude), l’espèce de requin, etc.
+Parmi ces 23 features, nous avons décidé nous seulement se focaliser sur certaines, car elles se révélaient pertinentes pour ce que nous voulions faire avec notre outil de visualisation.
+C’est pourquoi nous avons choisi d’utiliser :
 
 
 \begin{table}[h]
@@ -110,17 +110,17 @@ C’est pourquoi, nous avons choisi d’utiliser :
 \subsection{Nettoyage des données}
 Après avoir présenté le jeu de données initial ainsi que les attributs pertinents pour notre outil, cette section se concentrera sur les étapes de nettoyage des données que nous avons effectuées pour parvenir à notre jeu de données final.
 
-Notre premier objectif, pour obtenir un jeu de donnée plus propre était de nettoyer l’attribut « Espèces de requins (« Species ») », cet attribut comportait 1 576 espèces uniques pour 6 448 attaques de requins.
-C’est pourquoi, nous avons tout d’abord supprimé les attaques de requins qui ne comportaient aucune espèce dans leurs informations. Cela a réduit le nombre d’attaques de requins de 6 448 à 3 302 attaques.
+Notre premier objectif, pour obtenir un jeu de donnée plus propre, était de nettoyer l’attribut « Espèces de requins (« Species ») », cet attribut comportait 1 576 espèces uniques pour 6 448 attaques de requins.
+C’est pourquoi nous avons tout d’abord supprimé les attaques de requins qui ne comportaient aucune espèce dans leurs informations. Cela a réduit le nombre d’attaques de requins de 6 448 à 3 302 attaques.
 Ensuite, nous avons procédé au nettoyage des noms d’espèce en supprimant les espèces n’étant pas un nom d’espèces précis. Donc les informations telles que la taille ou le poids ne nous intéressaient pas.
 De plus, certains noms d’espèce possédaient des adjectifs qui agrandissaient le nombre d’espèces différentes, alors nous avons décidé de retirer ces adjectifs pour garder exclusivement les noms d’espèces.
 Ce nettoyage a réduit considérablement les nombres d’attaques de requins donnant 1 975 attaques et 88 espèces uniques.
-En accord avec notre objectif d’outil de visualisation, il nous manquait des informations telles que les tailles de différents attributs des requins. C’est pourquoi nous les avons générés aléatoirement via une tranche minimales et maximales pour chacun des attributs. Les tranches minimales et maximales ont été déterminés par ce que l'on a trouvé avec nos recherches. Pour chaque espèce, la répartition des valeurs entre ces tranches est gaussienne avec une moyenne et un écart type aléatoire qui rentre dans les tranches.
+En accord avec notre objectif d’outil de visualisation, il nous manquait des informations telles que les tailles de différents attributs des requins. C’est pourquoi nous les avons générées aléatoirement via une tranche minimales et maximales pour chacun des attributs. Les tranches minimale et maximale ont été déterminées par ce que l'on a trouvé avec nos recherches. Pour chaque espèce, la répartition des valeurs entre ces tranches est gaussienne avec une moyenne et un écart type aléatoire qui rentre dans les tranches.
 
 
 \clearpage
 \subsection{Jeu de données final}
-Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de données final qui nous servira dans notre outil de visualisation. Le premier comprend les informations relatives aux attaques de requins et le second au caractéristiques des requins.
+Maintenant que le nettoyage a été effectué, nous obtenons notre jeu de données final qui nous servira dans notre outil de visualisation. Le premier comprend les informations relatives aux attaques de requins et le second aux caractéristiques des requins.
 
 \begin{longtable}[h]{|p{.25\textwidth} | p{.20\textwidth}|p{.15\textwidth}|p{.25\textwidth}|}
 	\hline
@@ -166,7 +166,7 @@ Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de donn�
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=16.4cm]{assets/personna/alain_grantte.png}
-	\caption{\label{assets/persona/alain_grantte} Persona Alain Grantte}
+	\caption{\label{assets/persona/alain_grantte} Persona Alan Grant}
 \end{figure}
 
 \newpage
@@ -174,21 +174,21 @@ Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de donn�
 
 \subsection{Description des tâches}
 \begin{itemize}
-	\item Étant un passionné de requin, Alan Grant décide de créer son propre requin à partir de différentes parties d'autres requins déjà existant. Comme il n'est pas un expert des requins et du milieu marin de façon générale il lui faut un outils qui l'aidera dans son projet. Alan décide donc d'utiliser l'application \textit{Pimp My Requin} pour créer son requin de rêve.
+	\item Étant un passionné de requin, Alan Grant décide de créer son propre requin à partir de différentes parties d'autres requins déjà existant. Comme il n'est pas un expert des requins et du milieu marin de façon générale, il lui faut un outil qui l'aidera dans son projet. Alan décide donc d'utiliser l'application \textit{Pimp My Requin} pour créer son requin de rêve.
 	\item Dans un premier temps, Alan peut choisir la partie du requin qu'il voudrait récupérer.
 	\item Ensuite, l'utilisateur peut choisir les caractéristiques de la partie du requin sélectionné. Il peut par exemple déterminer la longueur de la nageoire de son requin.
-	\item Après avoir défini les caractéristiques de la partie du requin, Alan peut comparer les différentes espèces qui respecte ses critères et établir laquelle sera la meilleur pour son propre requin.
-	\item Une fois la comparaison faite, il peut choisir l'espèce qui lui convient et l'ajouter à sa configuration, pour chaque espèce, notre outil lui donne une estimation du temps et du coût nécessaire à la création de son requin.
+	\item Après avoir défini les caractéristiques de la partie du requin, Alan peut comparer les différentes espèces qui respectent ses critères et établir laquelle sera la meilleure pour son propre requin.
+	\item Une fois la comparaison faite, il peut choisir l'espèce qui lui convient et l'ajouter à sa configuration, pour chaque espèce, notre outil lui donne une estimation du temps et du coût nécessaires à la création de son requin.
 	\item Par la suite, il a un aperçu du voyage qu'il devra effectuer pour créer son requin et il peut choisir si il veut un voyage avec une distance minimale ou un coût minimal.
-	\item Enfin, l'utilisateur apercois un résumer de configuration, ainsi que les estimations finales.
+	\item Enfin, l'utilisateur aperçoit un résumé de configuration, ainsi que les estimations finales.
 \end{itemize}
 
 \subsection{Formalisation des tâches}
 \begin{enumerate}
 	\item Identifier la partie du requin que l’on souhaite récupérer.
 	\item Comparer les caractéristiques de la partie du requin.
-	\item Consulter les espèces de requin dans le but de définir l’espèce qui permet de récupérer plusieurs parties en une fois.
-	\item Synthétiser une liste d’espèces de requin qui constituera les étapes du voyage à réaliser pour finaliser le mégalodon.
+	\item Consulter les espèces de requins dans le but de définir l’espèce qui permet de récupérer plusieurs parties en une fois.
+	\item Synthétiser une liste d’espèces de requins qui constituera les étapes du voyage à réaliser pour finaliser le mégalodon.
 	\item Dériver le voyage à réaliser pour récupérer les parties du/des différents requins.
 	\item Comparer la durée et le coût du trajet afin d’optimiser la récupération de plusieurs parties de requin.
 	\item Résumer la sélection des espèces de requins et les estimations.
@@ -267,15 +267,15 @@ Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de donn�
 		 &
 		Figure \ref{onglet2} – Choix caractéristique – Onglet "Where is my requin ?".
 		\\\hline
-		3. Consulter les espèces de requin dans le but de définir l’espèce qui permet de récupérer plusieurs parties en une fois.
+		3. Consulter les espèces de requins dans le but de définir l’espèce qui permet de récupérer plusieurs parties en une fois.
 		 &
-		Il sera possible de déterminer l’espèce de requin que l’on souhaite dériver via la liste présente sur la gauche de la page. Une fois le choix de l’espèce effectué, les différentes visualisations sur la droite de la page s'actualisent. Un Bar Chart pour chacunes des caractéristiques nous montrerons la fluctuations de cette dernière à travers l'espèce, Nous aurons aussi un Spider Chart afin de voir plus directement si l'espèce choisie coche plusieurs des cases de l'utilisateur. Ensuite, une petite carte montrera où cette espèce à été apperçue dernièrement. De plus, dès qu'il est possible de regrouper des parties via une seule espèce, l'espèce permettant cela sera mise en avant par un petit logo "recommandation".
+		Il sera possible de déterminer l’espèce de requin que l’on souhaite dériver via la liste présente sur la gauche de la page. Une fois le choix de l’espèce effectué, les différentes visualisations sur la droite de la page s'actualisent. Un Bar Chart pour chacune des caractéristiques nous montrera la fluctuation de cette dernière à travers l'espèce. Nous aurons aussi un Spider Chart afin de voir plus directement si l'espèce choisie coche plusieurs des cases de l'utilisateur. Ensuite, une petite carte montrera où cette espèce a été aperçue dernièrement. De plus, dès qu'il est possible de regrouper des parties via une seule espèce, l'espèce permettant cela sera mise en avant par un petit logo "recommandation".
 		 &
 		Figure \ref{onglet3} – Comparaison des espèces vis-à-vis de leurs caractéristiques – Onglet "Who's da best".
 		\\\hline
-		4. Synthétiser une liste d’espèces de requin qui constituera les étapes du voyage à réaliser pour finaliser le mégalodon.
+		4. Synthétiser une liste d’espèces de requins qui constituera les étapes du voyage à réaliser pour finaliser le mégalodon.
 		 &
-		Sur cette page, la partie gauche sera dédiée à la liste des différentes espèces de requin. Tandis que la droite sera dédiée au "panier" auquel sera ajoutée l’espèce que l’on souhaite. Cette page sera sauvegardée jusqu’à la validation du voyage. Un bouton "add" permet de revenir à la première page (Figure \ref{onglet1}) et permettra de recommencer le processus avec une partie que l’on n'a pas encore sélectionnée par le passé.
+		Sur cette page, la partie gauche sera dédiée à la liste des différentes espèces de requins. Tandis que la droite sera dédiée au "panier" auquel sera ajoutée l’espèce que l’on souhaite. Cette page sera sauvegardée jusqu’à la validation du voyage. Un bouton "add" permet de revenir à la première page (Figure \ref{onglet1}) et permettra de recommencer le processus avec une partie que l’on n'a pas encore sélectionnée par le passé.
 		 &
 		Figure \ref{onglet4} – Établir un panier d’espèce de requin – Onglet "The panier".
 		\\\hline
@@ -291,7 +291,7 @@ Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de donn�
 		 &
 		Figure \ref{onglet5} – Visualisation du voyage.
 		\\\hline
-		6. Résumer la sélection des espèces de requins et les estimations.
+		7. Résumer la sélection des espèces de requins et les estimations.
 		 &
 		Une liste des différentes espèces de requins permet une dernière relecture avant de finaliser le requin personnalisé.
 		 &
@@ -301,12 +301,12 @@ Maintenant, que le nettoyage a été effectué, nous obtenons notre jeu de donn�
 \end{center}
 
 \section{Protocole d'évaluation}
-Dans cette partie, nous allons décrire notre protocole d’évaluation. Nous avons décidé d'opter pour une approches qualitative car tout les scientifiques ne souhaitent pas créer des requins.
+Dans cette partie, nous allons décrire notre protocole d’évaluation. Nous avons décidé d'opter pour une approche qualitative, car tous les scientifiques ne souhaitent pas créer des requins.
 
 \subsection{Test utilisateur}
 
 \subsubsection{Objectifs}
-L'objectif principal de notre test utilisateurs est l'évaluation de l'interface de notre solution. En effet, nous estimons avoir une solution suffisamment fonctionnelle qui permet de simuler certaines taches d'exécution.
+L'objectif principal de notre test utilisateur est l'évaluation de l'interface de notre solution. En effet, nous estimons avoir une solution suffisamment fonctionnelle qui permet de simuler certaines taches d'exécution.
 Notre attention se porte particulièrement sur l'évaluation de la convivialité de notre outil de visualisation, tout en veillant à identifier tout problème éventuel lors de la séquence d'exécution des tâches.
 
 \subsubsection{Scénarios}
@@ -355,7 +355,7 @@ Informations données à l'utilisateur :
 Aide pour les commentaires de la grille d'évaluation :
 \begin{itemize}
 	\item Quelle était la première action réalisée ?
-	\item Quel est le coût total et le nombre de voyages finaux ?
+	\item Quels sont le coût total et le nombre de voyages finaux ?
 \end{itemize}
 
 \paragraph{Scénario 4 : Créer un requin avec un minimum de 3 voyages}
@@ -363,7 +363,7 @@ Aide pour les commentaires de la grille d'évaluation :
 Informations données à l'utilisateur :
 \begin{itemize}
 	\item Vous allez assembler un requin en combinant des parties prélevées sur différents requins.
-	\item Chaque composant doit provenir de requins qui se trouve au minimum à 3 endroits différents.
+	\item Chaque composant doit provenir de requins qui se trouvent au minimum à 3 endroits différents.
 	\item Les filtres vous permettent d'obtenir une taille minimale.
 	\item La carte vous montre s'il existe des espèces par rapport à vos filtres.
 	\item L'onglet final doit être composé de 3 voyages minimum.
@@ -372,7 +372,7 @@ Informations données à l'utilisateur :
 Aide pour les commentaires de la grille d'évaluation :
 \begin{itemize}
 	\item Quelle était la première action réalisée ?
-	\item Quel est le coût total et le nombre de voyages finaux ?
+	\item Quels sont le coût total et le nombre de voyages finaux ?
 \end{itemize}
 
 \paragraph{Scénario 5 : Créer un requin avec un maximum de 10000 dollars}
@@ -383,7 +383,7 @@ Informations données à l'utilisateur :
 	\item Le montant total pour votre requin ne doit pas dépasser 10000 dollars.
 	\item Les filtres vous permettent d'obtenir une taille minimale.
 	\item La carte vous montre s'il existe des espèces par rapport à vos filtres.
-	\item Le premier et dernier onglet vous montrent l'estimation du coût.
+	\item Le premier et dernier onglet vous montre l'estimation du coût.
 \end{itemize}
 
 Aide pour les commentaires de la grille d'évaluation :
@@ -402,7 +402,7 @@ Informations données à l'utilisateur :
 	\item Vous n'avez droit qu'à 2 voyages.
 	\item Les filtres vous permettent d'obtenir une taille minimale.
 	\item La carte vous montre s'il existe des espèces par rapport à vos filtres.
-	\item Le premier et dernier onglet vous montrent l'estimation du coût.
+	\item Le premier et dernier onglet vous montre l'estimation du coût.
 \end{itemize}
 
 Aide pour les commentaires de la grille d'évaluation :
@@ -410,7 +410,7 @@ Aide pour les commentaires de la grille d'évaluation :
 	\item Quelle était la première action réalisée ?
 	\item Est-ce possible ?
 	\item Si oui, quel est le nombre d'espèces différentes qui composent votre requin ?
-	\item Quel est le coût total et le nombre de voyages finaux ?
+	\item Quels sont le coût total et le nombre de voyages finaux ?
 \end{itemize}
 
 \subsubsection{Grille d'observation}
@@ -446,30 +446,30 @@ La table \ref{grille_observation} présente la grille d'observation que nous uti
 
 \clearpage
 \subsubsection{Recrutement des utilisateurs}
-Nous prévoyons de recruter cinq utilisateurs, en particulier des paléontologues ayant une expertise certaines dans l'anatomie sous-marine des animaux. Nous souhaitons également inclure des paléontologues qui ont de l'expérience dans les parcs "Jurassic Park" et "Jurassic World", car leurs expériences pourraient nous fournir des informations précieuses sur la faisabilité de recréer un Mégalodon.
+Nous prévoyons de recruter cinq utilisateurs, en particulier des paléontologues ayant une expertise certaine dans l'anatomie sous-marine des animaux. Nous souhaitons également inclure des paléontologues qui ont de l'expérience dans les parcs "Jurassic Park" et "Jurassic World", car leurs expériences pourraient nous fournir des informations précieuses sur la faisabilité de recréer un Mégalodon.
 
 \subsubsection{Passation}
-La passation du test se fera dans une salle qui inspire le comfort, de sorte à ce que les seules frustrations possibles viennent de notre outil. Les observateurs posséderont une suite d'actions pour chaque scénarios. Pour chaque test, il y aura un utilisateur et 3 observateur. Les tests seront enregistrés, à la fois l'interface et l'utilisateur.
+La passation du test se fera dans une salle qui inspire le confort, de sorte que les seules frustrations possibles viennent de notre outil. Les observateurs posséderont une suite d'actions pour chaque scénario. Pour chaque test, il y aura un utilisateur et 3 observateurs. Les tests seront enregistrés, à la fois l'interface et l'utilisateur.
 
-C'est pour cela qu'avant de commencer les tests, les utilisateurs devront signer le formulaire de consentement certifié conforme au RGPD. Après avoir expliqué brièvement le but de l'application, l'utilisateur prendra part au différents scénarios et nous appliquerons la technique "Think Aloud" pour que nous puissions en prendre notes.
-Les observateurs noteront toute déviations par rapport à la suite d'actions "optimales"
+C'est pour cela qu'avant de commencer les tests, les utilisateurs devront signer le formulaire de consentement certifié conforme au RGPD. Après avoir expliqué brièvement le but de l'application, l'utilisateur prendra part aux différents scénarios et nous appliquerons la technique "Think Aloud" pour que nous puissions en prendre note.
+Les observateurs noteront toutes déviations par rapport à la suite d'actions "optimales"
 
 Un court débriefing se tiendra avant le départ des utilisateurs dans lequel nous poserons ces questions :
-" Y'a t-il une étape qui vous a ralenti ? Si oui pourquoi ?"
-" Avez vous eu des problèmes pour bien sélectionner vos espèces de requins?"
+" Y a-t-il une étape qui vous a ralenti ? Si oui, pourquoi ?"
+" Avez-vous eu des problèmes pour bien sélectionner vos espèces de requins?"
 \subsection{Type d'évaluation}
-Nous avons décidé d'utiliser l'inspection cognitive, car cela répondait au mieux à ce que nous souhaitions faire. Nous essayons de ce fait d'appliquer au mieux cette méthodologie d'évaluation. Grâce à cela, nous espérons déterminer si notre interface est suffisamment claire pour une personne agée, comme notre utilisateur cible. Si ce n'est pas le cas, nous verrons assez simplement les parties qui demandent un changement.
+Nous avons décidé d'utiliser l'inspection cognitive, car cela répondait au mieux à ce que nous souhaitions faire. Nous essayons de ce fait d'appliquer au mieux cette méthodologie d'évaluation. Grâce à cela, nous espérons déterminer si notre interface est suffisamment claire pour une personne âgée, comme notre utilisateur cible. Si ce n'est pas le cas, nous verrons assez simplement les parties qui demandent un changement.
 Le but de cette méthode d'évaluation est de confronter l'interface à des experts avant qu'elle ne soit confrontée à des utilisateurs. Cela nous permettra de baliser les potentielles erreurs avant d'impliquer des utilisateurs.
 Le test s'effectuera sur un scénario que l'utilisateur devra réaliser.
 
-Effectivement, nous essayons via cela d'obtenir des retours critiques qui nous aiderons à améliorer notre outil.
+Effectivement, nous essayons via cela d'obtenir des retours critiques qui nous aideront à améliorer notre outil.
 De plus, en utilisant un scénario utilisateur, nous espérons réduire le temps précieux des experts pour réaliser l'évaluation.
 D'ailleurs, nous estimons avoir besoin d'au moins 4 experts minimum, afin de récolter divers avis qui pourront être synthétisés pour en tirer des conclusions.
 
 Notre objectif est donc de réaliser l'évaluation par les experts pour ensuite la faire avec les utilisateurs.
 
 \subsubsection{Séquence d'action optimales}
-Dans le but de réaliser cette méthode d'évaluation, il sera nécessaire de créer des séquences d'actions qui permettront aux expert d'évaluer l'outil de visualisation. Comme à la figure \ref{sequence_optimale} pour réaliser le plus grand requin.
+Dans le but de réaliser cette méthode d'évaluation, il sera nécessaire de créer des séquences d'actions qui permettront aux experts d'évaluer l'outil de visualisation. Comme à la figure \ref{sequence_optimale} pour réaliser le plus grand requin.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=14.4cm]{assets/sequence_optimale}
@@ -479,7 +479,7 @@ Dans le but de réaliser cette méthode d'évaluation, il sera nécessaire de cr
 \FloatBarrier
 
 \subsubsection{Fiche d'évaluation}
-Dans le but d'obtenir un retour sur les différentes actions que l'expert va réaliser, en plus de lui fournir la suite de taches optimales, nous lui fournissons une fiche d'évaluation (Table \ref{grille_evaluation}) sur laquel il inscrira les retours sur l'outil.
+Dans le but d'obtenir un retour sur les différentes actions que l'expert va réaliser, en plus de lui fournir la suite de taches optimales, nous lui fournissons une fiche d'évaluation (Table \ref{grille_evaluation}) sur laquelle il inscrira les retours sur l'outil.
 
 \newpage
 \begin{table}[h]
